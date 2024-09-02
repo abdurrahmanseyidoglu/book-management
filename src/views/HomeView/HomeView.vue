@@ -13,6 +13,8 @@
           type="number"
           placeholder="Enter User ID"
           class="user-id-input"
+          @keydown.enter="onSearch"
+          autofocus
         />
         <button @click="onSearch" class="search-button">Search</button>
       </div>
