@@ -34,11 +34,9 @@
                   }
                 }"
               >
-                <button @click.stop class="book__update">Update</button>
+                <button class="book__update">Update</button>
               </RouterLink>
-              <button class="book__delete" @click.stop="showDeleteConfirmation(book.id)">
-                Delete
-              </button>
+              <button class="book__delete" @click="showDeleteConfirmation(book.id)">Delete</button>
             </div>
             <div v-if="bookToDelete === book.id" class="confirmation-prompt">
               <p>Are you sure you want to delete this book?</p>
@@ -148,95 +146,6 @@ const nextPage = () => {
 }
 </script>
 
-<style scoped>
-.search-container {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  .user-id-input {
-    padding: 8px;
-    font-size: 16px;
-  }
-
-  .search-button {
-    padding: 8px 16px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-}
-
-.book__link {
-  text-decoration: none;
-}
-
-.book__update-delete {
-  margin-top: 1rem;
-}
-
-.book__update,
-.book__delete {
-  margin-right: 8px;
-  padding: 6px 12px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.confirmation-prompt {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 1rem;
-
-  gap: 1rem;
-  p {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-}
-.no-books {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  p {
-    font-size: 1.5rem;
-  }
-}
-
-.confirmation-prompt button {
-  margin-right: 8px;
-  padding: 6px 12px;
-  font-size: 14px;
-  cursor: pointer;
-}
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-block: 2rem;
-
-  button {
-    margin: 0 5px;
-    padding: 8px 16px;
-    font-size: 14px;
-    cursor: pointer;
-    &:disabled {
-      cursor: not-allowed;
-    }
-  }
-
-  span {
-    font-size: 16px;
-  }
-}
+<style lang="scss">
+@import './HomeView.scss';
 </style>

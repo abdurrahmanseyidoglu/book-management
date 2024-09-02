@@ -1,7 +1,7 @@
-import HomeView from './views/HomeView.vue'
-import BookView from './views/BookView.vue'
-import AddBook from './views/AddBook.vue'
-import UpdateBook from './views/UpdateBook.vue'
+import HomeView from './views/HomeView/HomeView.vue'
+import BookView from './views/BookView/BookView.vue'
+import AddBook from './views/AddBook/AddBook.vue'
+import UpdateBook from './views/UpdateBook/UpdateBook.vue'
 
 import { createRouter, createWebHistory } from 'vue-router'
 

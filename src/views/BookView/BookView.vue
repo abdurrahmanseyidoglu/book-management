@@ -30,32 +30,5 @@ interface Book {
 </script>
 
 <style lang="scss">
-.fetching,
-.error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
-  color: #333;
-  margin-top: 0.5rem;
-}
-.book-info {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-.single-book {
-  width: fit-content;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  margin-inline: auto;
-
-  &__title,
-  &__id {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 10px;
-  }
-}
+@import './BookView.scss';
 </style>

@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import AppNavbar from './components/AppNavbar.vue'
+import AppNavbar from './components/AppNavbar/AppNavbar.vue'
 </script>
 <style lang="scss">
 .router-view {
