@@ -24,7 +24,7 @@
   color: white;
   text-decoration: none;
   font-size: 1.25rem;
-  &:hover{
+  &:hover {
     color: red;
   }
 }

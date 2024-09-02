@@ -14,6 +14,5 @@ import AppNavbar from './components/AppNavbar.vue'
 <style lang="scss">
 .router-view {
   padding-inline: 1rem;
-
 }
 </style>

@@ -23,8 +23,8 @@
     </div>
     <div v-else-if="responseData" class="response">
       <h1>Book Updated</h1>
-      <p>Title: {{ responseData.title }}</p>
-      <p>Body: {{ responseData.body }}</p>
+      <p><span>Title: </span> {{ responseData.title }}</p>
+      <p><span>Body: </span> {{ responseData.body }}</p>
     </div>
 
     <div v-else-if="errorMessage" class="error">
@@ -114,36 +114,5 @@ const handleFormSubmission = async () => {
 <style lang="scss">
 h2 {
   margin-bottom: 1rem;
-}
-.update-book-form {
-  max-width: 400px;
-  margin: 0 auto;
-
-  div {
-    margin-bottom: 15px;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  input,
-  textarea {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-
-  .error {
-    color: red;
-    font-size: 0.9em;
-  }
-
-  .response {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: lightgreen;
-  }
 }
 </style>

@@ -1,5 +1,4 @@
 <template>
-  <h1>This is the home</h1>
   <div v-if="isFetching" class="fetching">
     <h1>Fetching Data.........</h1>
   </div>
@@ -34,12 +33,13 @@ interface Book {
 </script>
 
 <style lang="scss">
-.books {
-  .book {
-    padding: 10px;
-    border: 1px solid red;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
+.fetching,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #333;
+  margin-top: 0.5rem;
 }
 </style>

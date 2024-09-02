@@ -7,36 +7,52 @@
       <h1>Error while Fetching</h1>
     </div>
     <div v-else>
-      <input
-        v-model.number="userId"
-        type="number"
-        placeholder="Filter by User ID"
-        class="user-id-input"
-      />
-      <div v-if="filteredBooks && filteredBooks.length > 0" class="books">
-        <div v-for="book in filteredBooks" :key="book.id" class="book">
+      <div class="search-container">
+        <input
+          v-model.number="userId"
+          type="number"
+          placeholder="Enter User ID"
+          class="user-id-input"
+        />
+        <button @click="onSearch" class="search-button">Search</button>
+      </div>
+      <div v-if="books && books.length > 0" class="books">
+        <div v-for="book in books" :key="book.id" class="book">
           <RouterLink :to="`/${book.id}`" class="book__link">
-            <h2 class="book__title">
-              {{ book.title }}
-            </h2>
-            <p class="book__body">
-              {{ book.body }}
-            </p>
+            <h2 class="book__title">{{ book.title }}</h2>
+            <p class="book__body">{{ book.body }}</p>
           </RouterLink>
           <div class="book__update-delete">
-            <RouterLink :title="book.title" :body="book.body" :author-id="book.userId" :to="`update-book/${book.id}`">
-              <button class="book__update">Update</button></RouterLink
+            <RouterLink
+              :to="{
+                path: `update-book/${book.id}`,
+                query: {
+                  title: book.title,
+                  body: book.body,
+                  userId: book.userId
+                }
+              }"
             >
-            <button class="book__delete" @click="deleteBook(book.id)">Delete</button>
+              <button class="book__update">Update</button>
+            </RouterLink>
+            <button class="book__delete" @click="showDeleteConfirmation(book.id)">Delete</button>
+          </div>
+          <div v-if="bookToDelete === book.id" class="confirmation-prompt">
+            <p>Are you sure you want to delete this book?</p>
+            <button @click="confirmDelete(book.id)">Yes, Delete</button>
+            <button @click="cancelDelete">No</button>
           </div>
         </div>
+      </div>
+      <div v-else class="no-books">
+        <p>No books found.</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useFetch } from '@vueuse/core'
 import { RouterLink } from 'vue-router'
 
@@ -48,86 +64,130 @@ interface Book {
 }
 
 const userId = ref<number | null>(null)
+const books = ref<Book[] | null>(null)
+const isFetching = ref<boolean>(false)
+const error = ref<Error | null>(null)
+const bookToDelete = ref<number | null>(null) // Track which book is to be deleted
 
-// Fetch data initially, you might want to adapt this for better userId management.
-const { isFetching, error, data } = useFetch<Book[]>(
-  `https://jsonplaceholder.typicode.com/posts`
-).json()
+const fetchBooks = async () => {
+  isFetching.value = true
+  error.value = null
 
-const filteredBooks = computed(() => {
-  const currentUserId = userId.value
-  const books = data.value
-  if (currentUserId) {
-    return books.filter((book) => book.userId === currentUserId)
+  const url = userId.value
+    ? `https://jsonplaceholder.typicode.com/posts?userId=${userId.value}`
+    : 'https://jsonplaceholder.typicode.com/posts'
+
+  const { data, error: fetchError } = await useFetch<Book[]>(url).json()
+
+  if (fetchError.value) {
+    error.value = fetchError.value
+  } else {
+    books.value = data.value || []
   }
 
-  // If no userId is provided, return all books
-  return books
-})
+  isFetching.value = false
+}
 
-const deleteBook = (id: number) => {
-  console.log('Delete book with id:', id)
+const onSearch = () => {
+  fetchBooks()
+}
+
+// Initial fetch for all books
+fetchBooks()
+
+const showDeleteConfirmation = (id: number) => {
+  bookToDelete.value = id
+}
+
+const confirmDelete = async (id: number) => {
+  try {
+    const { error } = await useFetch(`https://jsonplaceholder.typicode.com/posts/${id}`).delete()
+
+    if (error.value) {
+      console.error('Error deleting book:', error.value)
+    } else {
+      books.value = books.value?.filter((book) => book.id !== id) || []
+      bookToDelete.value = null
+    }
+  } catch (err) {
+    console.error('Error during the deletion process:', err)
+  }
+}
+
+const cancelDelete = () => {
+  bookToDelete.value = null
 }
 </script>
 
-<style lang="scss">
-.user-id-input {
-  margin-bottom: 10px;
-  padding: 1rem;
-  font-size: 1rem;
-}
-
-.books {
+<style scoped>
+.search-container {
   display: flex;
-  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
-.book {
-  padding: 10px;
-  width: 100%;
+.user-id-input {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.search-button {
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .book__link {
   text-decoration: none;
-  color: inherit;
-}
-
-.book__title {
-  font-size: 1.2em;
-}
-
-.book__body {
-  font-size: 1em;
 }
 
 .book__update-delete {
-  margin-top: 10px;
-  .book__update,
-  .book__delete {
-    margin-right: 10px;
-    padding: 1rem;
-    border-radius: 10px;
-    outline: none;
-    box-shadow: none;
-    border: none;
+  margin-top: 1rem;
+}
 
-    &:hover {
-      cursor: pointer;
-    }
+.book__update,
+.book__delete {
+  margin-right: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.confirmation-prompt {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 1rem;
+
+  gap: 1rem;
+  p {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
-  .book__update {
-    background-color: green;
-    color: white;
-    &:hover {
-      background-color: lighten(green, 3);
-    }
+}
+.no-books {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  p {
+    font-size: 1.5rem;
   }
-  .book__delete {
-    background-color: lightcoral;
-    color: white;
-    &:hover {
-      background-color: darken(lightcoral, 5);
-    }
-  }
+}
+
+.confirmation-prompt button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
 }
 </style>
