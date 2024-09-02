@@ -1,18 +1,19 @@
 <template>
   <nav>
-    <Navbar />
+    <AppNavbar />
   </nav>
   <main>
-    <RouterView class="px-1" />
+    <RouterView class="router-view" />
   </main>
 </template>
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import Navbar from './components/Navbar.vue'
+import AppNavbar from './components/AppNavbar.vue'
 </script>
 <style lang="scss">
-.px-1 {
+.router-view {
   padding-inline: 1rem;
+
 }
 </style>

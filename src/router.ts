@@ -11,7 +11,16 @@ const router = createRouter({
     { path: '/', name: 'home', component: HomeView },
     { path: '/:id', name: 'singleBook', component: BookView },
     { path: '/add-book', name: 'addBook', component: AddBook },
-    { path: '/update-book/:id', name: 'updateBook', component: UpdateBook }
+    {
+      path: '/update-book/:id',
+      component: UpdateBook,
+      props: (route) => ({
+        id: route.params.id,
+        title: route.query.title,
+        body: route.query.body,
+        userId: route.query.userId
+      })
+    }
   ]
 })
 
