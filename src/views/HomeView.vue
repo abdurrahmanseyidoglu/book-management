@@ -67,7 +67,7 @@ const userId = ref<number | null>(null)
 const books = ref<Book[] | null>(null)
 const isFetching = ref<boolean>(false)
 const error = ref<Error | null>(null)
-const bookToDelete = ref<number | null>(null) // Track which book is to be deleted
+const bookToDelete = ref<number | null>(null)
 
 const fetchBooks = async () => {
   isFetching.value = true
@@ -87,30 +87,25 @@ const fetchBooks = async () => {
 
   isFetching.value = false
 }
+// Initial fetch to get all books
+fetchBooks()
 
 const onSearch = () => {
   fetchBooks()
 }
-
-// Initial fetch for all books
-fetchBooks()
 
 const showDeleteConfirmation = (id: number) => {
   bookToDelete.value = id
 }
 
 const confirmDelete = async (id: number) => {
-  try {
-    const { error } = await useFetch(`https://jsonplaceholder.typicode.com/posts/${id}`).delete()
+  const { error } = await useFetch(`https://jsonplaceholder.typicode.com/posts/${id}`).delete()
 
-    if (error.value) {
-      console.error('Error deleting book:', error.value)
-    } else {
-      books.value = books.value?.filter((book) => book.id !== id) || []
-      bookToDelete.value = null
-    }
-  } catch (err) {
-    console.error('Error during the deletion process:', err)
+  if (error.value) {
+    console.error('Error deleting book:', error.value)
+  } else {
+    books.value = books.value?.filter((book) => book.id !== id) || []
+    bookToDelete.value = null
   }
 }
 

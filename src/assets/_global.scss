@@ -86,19 +86,19 @@
 
   .response {
     margin-block: 20px;
-    
+
     padding: 10px;
     background-color: lightgreen;
     h1 {
       font-size: 1.5rem;
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
     span {
       font-weight: 600;
-      
     }
   }
-  .adding,.updating{
+  .adding,
+  .updating {
     margin-top: 20px;
   }
 }
