@@ -1,37 +1,39 @@
-.books {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 20px;
-  gap: 20px;
-
-  .book {
-    width: 100%;
-    max-width: 600px;
+.books-wrapper {
+  .books {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    align-self: stretch;
-    &:hover {
-      background-color: darken(#f9f9f9, 4);
-    }
+    gap: 20px;
+    .book {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      align-self: stretch;
+      &:hover {
+        background-color: darken(#f9f9f9, 4);
+      }
 
-    &__title {
-      font-size: 1.5rem;
-      color: #333;
-      margin-bottom: 10px;
-      text-align: center;
-    }
+      &__title {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 10px;
+        text-align: center;
+      }
 
-    &__body {
-      font-size: 1rem;
-      color: #666;
-      margin: 0;
+      &__body {
+        font-size: 1rem;
+        color: #666;
+        margin: 0;
+      }
     }
   }
 }
+
 .add-book-form,
 .update-book-form {
   max-width: 400px;

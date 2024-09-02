@@ -5,14 +5,11 @@
   <div v-else-if="error" class="error">
     <h1>Error while Fetching</h1>
   </div>
-  <div v-else-if="data" class="books">
-    <div class="book">
-      <h2 class="book__title">
-        {{ data.title }}
-      </h2>
-      <p class="book__title">
-        {{ data.body }}
-      </p>
+  <div v-else-if="data">
+    <h1 class="book-info">Book Info :</h1>
+    <div class="single-book">
+      <h2 class="single-book__title">TITLE : {{ data.title }}</h2>
+      <h2 class="single-book__title">ID : {{ data.id }}</h2>
     </div>
   </div>
 </template>
@@ -41,5 +38,24 @@ interface Book {
   font-size: 1.5rem;
   color: #333;
   margin-top: 0.5rem;
+}
+.book-info {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.single-book {
+  width: fit-content;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  margin-inline: auto;
+
+  &__title,
+  &__id {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
 }
 </style>
