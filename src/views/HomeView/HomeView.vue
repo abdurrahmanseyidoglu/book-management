@@ -101,6 +101,7 @@ fetchBooks()
 
 const onSearch = () => {
   fetchBooks()
+  currentPage.value = 1
 }
 
 const showDeleteConfirmation = (id: number) => {
@@ -131,6 +132,7 @@ const totalPages = computed(() => {
 //The indexes of the books that should be shown
 const paginatedBooks = computed(() => {
   if (!books.value) return []
+  books.value
   const start = (currentPage.value - 1) * pageSize.value
   const end = start + pageSize.value
   return books.value.slice(start, end)
