@@ -28,8 +28,6 @@
               :body="book.body"
               @confirm-delete="confirmDelete"
             />
-
-           
           </div>
         </div>
         <!-- Pagination -->
@@ -99,7 +97,6 @@ const confirmDelete = async (id: number) => {
     bookToDelete.value = null
   }
 }
-
 
 const currentPage = ref(1)
 const pageSize = ref(10)
