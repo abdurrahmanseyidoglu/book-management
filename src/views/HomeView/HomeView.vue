@@ -21,30 +21,15 @@
       <div v-if="books && books.length > 0" class="books-wrapper">
         <div class="books">
           <div v-for="book in paginatedBooks" :key="book.id" class="book">
-            <RouterLink :to="`/${book.id}`" class="book__link">
-              <h2 class="book__title">{{ book.title }}</h2>
-              <p class="book__body">{{ book.body }}</p>
-            </RouterLink>
-            <div class="book__update-delete">
-              <RouterLink
-                :to="{
-                  path: `update-book/${book.id}`,
-                  query: {
-                    title: book.title,
-                    body: book.body,
-                    userId: book.userId
-                  }
-                }"
-              >
-                <button class="book__update">Update</button>
-              </RouterLink>
-              <button class="book__delete" @click="showDeleteConfirmation(book.id)">Delete</button>
-            </div>
-            <div v-if="bookToDelete === book.id" class="confirmation-prompt">
-              <p>Are you sure you want to delete this book?</p>
-              <button @click="confirmDelete(book.id)">Yes, Delete</button>
-              <button @click="cancelDelete">No</button>
-            </div>
+            <BookItem
+              :id="book.id"
+              :title="book.title"
+              :user-id="book.userId"
+              :body="book.body"
+              @confirm-delete="confirmDelete"
+            />
+
+           
           </div>
         </div>
         <!-- Pagination -->
@@ -64,7 +49,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useFetch } from '@vueuse/core'
-import { RouterLink } from 'vue-router'
+import BookItem from '@/components/BookItem/BookItem.vue'
 
 interface Book {
   userId: number
@@ -104,10 +89,6 @@ const onSearch = () => {
   currentPage.value = 1
 }
 
-const showDeleteConfirmation = (id: number) => {
-  bookToDelete.value = id
-}
-
 const confirmDelete = async (id: number) => {
   const { error } = await useFetch(`https://jsonplaceholder.typicode.com/posts/${id}`).delete()
 
@@ -119,9 +100,7 @@ const confirmDelete = async (id: number) => {
   }
 }
 
-const cancelDelete = () => {
-  bookToDelete.value = null
-}
+
 const currentPage = ref(1)
 const pageSize = ref(10)
 const totalPages = computed(() => {
@@ -132,7 +111,6 @@ const totalPages = computed(() => {
 //The indexes of the books that should be shown
 const paginatedBooks = computed(() => {
   if (!books.value) return []
-  books.value
   const start = (currentPage.value - 1) * pageSize.value
   const end = start + pageSize.value
   return books.value.slice(start, end)
